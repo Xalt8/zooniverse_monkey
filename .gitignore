@@ -3,3 +3,14 @@ AI Training Sets-20231024T092556Z-001/
 labels_basos_2023-11-01-11-49-24.json
 __pycache__/functions.cpython-311.pyc
 FastSAM-s.pt
+bad_shapes.pickle
+__pycache__/__init__.cpython-311.pyc
+.gitignore
+Code/__pycache__/functions.cpython-311.pyc
+Tests/__pycache__/__init__.cpython-311.pyc
+Tests/__pycache__/test_df.cpython-311-pytest-7.4.3.pyc
+.gitignore
+Tests/__pycache__/tests.cpython-311-pytest-7.4.3.pyc
+Tests/__pycache__/tests.cpython-311.pyc
+.gitignore
+Code/__pycache__/__init__.cpython-311.pyc
