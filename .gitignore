@@ -1,5 +1,7 @@
 env 
 AI Training Sets-20231024T092556Z-001/
+Yolo/
+__pycache__/
 labels_basos_2023-11-01-11-49-24.json
 __pycache__/functions.cpython-311.pyc
 FastSAM-s.pt
@@ -14,3 +16,12 @@ Tests/__pycache__/tests.cpython-311-pytest-7.4.3.pyc
 Tests/__pycache__/tests.cpython-311.pyc
 .gitignore
 Code/__pycache__/__init__.cpython-311.pyc
+Code/Tests/__pycache__/__init__.cpython-311.pyc
+Code/Tests/__pycache__/test_df.cpython-311-pytest-7.4.3.pyc
+Code/Tests/__pycache__/tests.cpython-311-pytest-7.4.3.pyc
+.gitignore
+Code/test.yaml
+Code/__pycache__/image_annotation.cpython-311.pyc
+Code/__pycache__/test_df.cpython-311-pytest-7.4.3.pyc
+Code/__pycache__/dump.cpython-311.pyc
+.vscode/launch.json

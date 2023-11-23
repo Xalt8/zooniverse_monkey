@@ -1,5 +1,6 @@
 from pathlib import Path
 import cv2
+import numpy as np
 import pandas as pd
 from functions import get_image_from_path
 from dump import save_image_to_path
@@ -83,3 +84,7 @@ def rotate_augmentation(image_info:pd.Series, images_df:pd.DataFrame, aug_csv_pa
                 'set': image_info['set']
             }
             write_to_aug_csv(row_dict= row_dict, aug_csv_path= aug_csv_path)
+
+
+if __name__ == "__main__":
+    ...

@@ -3,7 +3,8 @@ import numpy as np
 import json
 from pathlib import Path
 import pandas as pd
-from functions import get_image_path, get_image_from_path, ImageAnnotation, Cell
+import matplotlib.pyplot as plt
+from functions import get_image_path, get_image_from_path, ImageAnnotation, Cell, get_bbox_coords_from_normalized_coords
 
 
 def get_binary_image(image_name: str, total_df:pd.DataFrame) -> np.ndarray:
@@ -69,8 +70,48 @@ def parse_annotations(annotantions_json:json, image_folder_path:str) -> list[Ima
     return annotations
 
 
+def display_annotations(image_name:str, total_df:pd.DataFrame, image_annotation:ImageAnnotation) -> None:
+    """ Draws the image with the point coordinates and contours
+    """
+    _, axs = plt.subplots(nrows=1, ncols=2, figsize=(10,6))
+    plot_image_file(ax=axs[0], image_file_name=image_name, total_df=total_df)
+    image_path = get_image_path(image_file_name=image_name, total_df=total_df)
+    img = get_image_from_path(image_path)
+    for cell in image_annotation.cells:
+        x_min, x_max, y_min, y_max = get_bbox_coords_from_normalized_coords(center_x_normalized = cell.center_x_normalized,
+                                                                            center_y_normalized = cell.center_y_normalized,
+                                                                            width_normalized = cell.width_normalized,
+                                                                            height_normalized = cell.height_normalized)
+        
+        cv2.rectangle(img=img, pt1=(x_min, y_min), pt2=(x_max, y_max), color=(0, 255, 0), thickness=2)
+        axs[1].set_title('Bounding Boxes')
+        axs[1].imshow(img)
+    plt.tight_layout()
+    plt.show()
 
 
+def plot_image_file(ax:plt.axes, image_file_name:str, total_df:pd.DataFrame) -> plt.axes:
+    """ Takes an image file name, looks up the dataframe for all instances 
+        of WBCs in the image file and highlights the cells in the image 
+        
+        Usage:
+        fig, ax = plt.subplots()
+        plot_image_file(ax=ax,image_file_name='B014_77I_T19095_RT_x40_z0_i02j07.jpg', total_df=total_df)
+        plt.show()    
+    """
+    image_file_df = total_df[total_df['Image File'] == image_file_name]
+    image_path = get_image_path(image_file_name=image_file_name,
+                                total_df=total_df)
+    img = get_image_from_path(image_path)
+    colors = {'N' : "red", 'L' : "yellow", 'M' : "lightgreen", 'E' : "lightblue", 'B' : "magenta"}
+    ax.imshow(img)
+    ax.set_title(image_file_name, fontsize=8)
+    ax.set_xticks([]), ax.set_yticks([])
+    for row_idx in image_file_df.index:
+        x,y,cell = image_file_df.loc[row_idx, ['x_coord','y_coord','wbc_class']]        
+        ax.scatter(x=x,y=y,s=500, label=cell, facecolors='none', edgecolors=colors.get(cell, 'black'))
+    ax.legend(bbox_to_anchor=(0.5,-0.10), loc='lower center', ncol=5)
+    return ax 
 
 
 if __name__ == "__main__":
