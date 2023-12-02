@@ -17,11 +17,11 @@ def validate_file_path(file_path:str|Path) -> str:
     """ Checks to see if the file path is valid 
     """
     if not isinstance(file_path, (str, Path)):
-        raise ValueError(f"{file_path} must be a str or Path object")
+        raise ValueError(f"Must be a str or Path object")
     if isinstance(file_path, str):
         file_path = Path(file_path)
     if not file_path.is_file():
-        raise FileNotFoundError(f"Cannot find this file -> {file_path} ")
+        raise FileNotFoundError(f"Cannot find this file")
     return file_path.as_posix()
 
 
@@ -32,6 +32,16 @@ def get_image_from_path(file_path:str | Path) -> np.ndarray:
     img = cv2.imread(filename=file_path) 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return img
+
+
+def save_image_to_path(image:np.ndarray, file_path:str|Path) -> None:
+    """ Takes an image array converts it to BGR and saves to disk in RGB
+    """
+    if isinstance(file_path, Path):
+        file_path = file_path.as_posix()
+    img_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    cv2.imwrite(filename= file_path, img= img_bgr)
+
 
 
 def get_bad_shapes(image_folders:list[str] = 
@@ -136,7 +146,21 @@ def get_bbox_coords_from_normalized_coords(center_x_normalized:float,
     y_min = int(center_y - (height / 2))
     x_max = int(center_x + (width / 2))
     y_max = int(center_y + (height / 2))
+    
     return x_min, x_max, y_min, y_max 
+
+
+def get_bbox_from_xcoord_ycoord(x_coord:int, y_coord:int, 
+                                bbox_size:tuple[int, int]= (70,70), 
+                                image_shape:tuple[int,int]=(1000,1000)) -> tuple[int, int, int, int]:
+    """ Creates a bounding box from x_coord, y_coord """
+    offset_x, offset_y = bbox_size
+    x_min = max(0, x_coord - offset_x//2)
+    x_max = min(image_shape[1], x_coord + offset_x//2)
+    y_min = max(0, y_coord - offset_y//2)
+    y_max = min(image_shape[0], y_coord + offset_y//2)
+
+    return x_min, x_max, y_min, y_max  
 
 
 def get_image_annotation(image_name:str, total_df:pd.DataFrame) -> ImageAnnotation:

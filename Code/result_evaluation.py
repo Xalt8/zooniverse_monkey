@@ -24,7 +24,7 @@ def get_ground_from_label_file(label_folder_path:str|Path, image_name:str, class
         return ground_truth
 
 
-def calculate_class_metrics(pred_results_list:list[Results], label_folder_path:Path):
+def calculate_class_metrics(pred_results_list:list[Results], label_folder_path:Path) -> dict:
     """ Calculates the total number of true-positive, true-native & false-positives 
         from a results list by comparing it to the ground truth for classes only 
         ================================================================================
@@ -79,6 +79,27 @@ def calculate_class_metrics(pred_results_list:list[Results], label_folder_path:P
             class_metrics[ground_class]['false_negative'] += 1
 
     return class_metrics
+
+
+def get_precision_recall_f1(class_metrics:dict) -> tuple[float, float, float]:
+    """ Returns the precision, recall and F1 score for a class metrics dict 
+    """
+    true_positives = [class_metrics[class_name]['true_positive'] for class_name in class_metrics]
+    false_positives = [class_metrics[class_name]['false_positive'] for class_name in class_metrics]
+    false_negatives = [class_metrics[class_name]['false_negative'] for class_name in class_metrics]
+    try:
+        overall_precision = round(number=sum(true_positives) / (sum(true_positives) + sum(false_positives)), ndigits= 4)
+    except ZeroDivisionError:
+        overall_precision = 0
+    try:
+        overall_recall = round(number = sum(true_positives) / (sum(true_positives) + sum(false_negatives)), ndigits= 4)
+    except ZeroDivisionError:
+        overall_recall = 0
+    try:
+        overall_f1_score = round(number=2 * (overall_precision * overall_recall) / (overall_precision + overall_recall), ndigits= 4)
+    except ZeroDivisionError:
+        overall_f1_score = 0
+    return overall_precision, overall_recall, overall_f1_score   
 
 
 if __name__ == "__main__":

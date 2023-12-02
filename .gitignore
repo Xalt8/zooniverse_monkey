@@ -1,6 +1,7 @@
 env 
 AI Training Sets-20231024T092556Z-001/
 Yolo/
+Few_Shot/
 __pycache__/
 labels_basos_2023-11-01-11-49-24.json
 __pycache__/functions.cpython-311.pyc
@@ -25,3 +26,6 @@ Code/__pycache__/image_annotation.cpython-311.pyc
 Code/__pycache__/test_df.cpython-311-pytest-7.4.3.pyc
 Code/__pycache__/dump.cpython-311.pyc
 .vscode/launch.json
+5_way_2_shot_img.png
+confusion_mat_yolo_2shot.png
+confusion_mat_yolo.png
