@@ -5,12 +5,10 @@ openslide-win64-20231011/
 Few_Shot/
 __pycache__/
 labels_basos_2023-11-01-11-49-24.json
-*.pyc
-FastSAM-s.pt
-bad_shapes.pickle
 .gitignore
 Code/test.yaml
 .vscode/launch.json
+*.pyc
 *.png
 *.pdf
 *.jpg
